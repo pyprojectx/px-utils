@@ -1,4 +1,4 @@
-![pyprojectx](docs/docs/assets/px.png)
+![pyprojectx](px.png)
 
 # Px-utils
 
