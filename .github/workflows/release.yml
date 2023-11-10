@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+*"
+
+jobs:
+  release-pypi:
+    name: release-pypi
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Build release
+        run: |
+          ./pw prep-release
+          ./pw build
+
+      - name: Create github release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: .changelog.md
+          files: wrappers.zip
+
+      - name: Publish to Pypi
+        run: ./pw publish --password ${{ secrets.PYPI_TOKEN }}

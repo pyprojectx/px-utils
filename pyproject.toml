@@ -1,0 +1,102 @@
+[project]
+name = "px-utils"
+version = "1.0.0.dev"
+description = "Build utilities python projects"
+license = { text = "MIT" }
+authors = [{ name = "Houbie", email = "ivo@houbrechts-it.be" }]
+readme = "README.md"
+urls = { homepage = "https://github.com/pyprojectx/px-utils" }
+
+keywords = ["build", "pyprojectx"]
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+requires-python = ">=3.8"
+
+dependencies = []
+
+[tool.pdm.build]
+buildlocked = true
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=7.4.3",
+    "pytest-mock>=3.12.0",
+]
+
+[project.scripts]
+todo = "px_utils.cli:main"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 120
+
+[tool.ruff]
+line-length = 120
+select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "ICN", "INP", "ISC", "NPY", "PD", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "ICN", "INP", "ISC", "NPY", "PD", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+ignore = ["D100", "D102", "D103", "D104", "D105", "D213", "D203", "T201", "TRY003", "EM102", "COM812", "S602", "S603", "S604", "S605", "S607"]
+[tool.ruff.per-file-ignores]
+"tests/*" = ["S101", "I001"]
+
+[tool.pyprojectx]
+pdm = { requirements = ["pdm==2.10.0"], post-install = "pw@pdm plugin add pdm-buildlocked && pw@pre-commit install" }
+black = "black==23.11.0"
+ruff = "ruff==0.1.4"
+pre-commit = "pre-commit==3.5.0"
+mkdocs = ["mkdocs ~=1.4", "mkdocs-material ~=9.1", "mkdocstrings[python] ~=0.21", "markdown-include ~=0.8", ]
+
+[tool.pyprojectx.aliases]
+install = "pdm install"
+update = "pdm update"
+outdated = "pdm update --outdated"
+clean = "rm -r .venv .pytest_cache dist"
+clean-all = """\
+pw@clean
+rm -r .pyprojectx"""
+ruff = "ruff src tests --fix"
+black = "black src tests"
+test = "pdm run pytest tests"
+check-ruff = "ruff src tests"
+check-black = "black src tests --check"
+check = [
+    "pw@check-black",
+    "pw@check-ruff",
+    "pw@test"
+]
+build = [
+    "pw@install",
+    "pw@check",
+    "pw@pdm build"
+]
+
+# used in github actions:
+publish = "pdm publish --username __token__"
+prep-release = """\
+# cleanup
+rm -f wrappers.zip .changelog.md
+# extract version from tag
+RELEASE_VERSION="${GITHUB_REF_NAME}"
+# replace __version__ in wrapper
+sed -i -e "s/__version__/${RELEASE_VERSION}/g" src/px_utils/wrapper/pw.py
+sed -i -e "s/1.0.0.dev/${RELEASE_VERSION}/g" pyproject.toml
+# cleanup sed backup
+rm -r src/px_utils/wrapper/pw.py?*
+rm -r pyproject.toml?*
+mkdir -p dist-zip
+cp src/px_utils/wrapper/pw.py dist-zip/pw
+cp src/px_utils/wrapper/pw.bat dist-zip/pw.bat
+zip -j wrappers.zip dist-zip/pw*
+awk '/-{3,}/{flag=1;next}/Release/{if (flag==1)exit}flag' CHANGELOG.md > .changelog.md
+"""
+
+generate-usage = "pw@ --help > docs/docs/usage.txt"
+serve-docs = "@mkdocs: cd docs && mkdocs serve"
+generate-docs = "@mkdocs: pw@generate-usage && cd docs && mkdocs build"
+deploy-docs = "@mkdocs: cd docs && mkdocs gh-deploy"
