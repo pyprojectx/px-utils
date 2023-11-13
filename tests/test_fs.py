@@ -7,7 +7,7 @@ from px_utils import fs
 def test_split_glob():
     assert fs._split_glob("*.py") == (Path(), "*.py")
     assert fs._split_glob("foo/bar/[a-z].py") == (Path("foo/bar"), "[a-z].py")
-    assert fs._split_glob("foo/foo.p?/bar") == (Path("foo"), "foo.p?/bar")
+    assert fs._split_glob("foo/foo.p?/bar") == (Path("foo"), str(Path("foo.p?/bar")))
     assert fs._split_glob("foo.py") == (Path("foo.py"), None)
 
 
@@ -66,13 +66,13 @@ def test_copytree_glob(src, dest_files):
 @pytest.mark.usefixtures("tmp_dir")
 def test_movetree_no_glob():
     fs.movetree("root", "dest")
-    assert {str(p) for p in Path().glob("dest/**/*.*")} == {
-        "dest/subdir-a/a-file.txt",
-        "dest/subdir-a/a-picture.png",
-        "dest/subdir-a/subdir-ac/ac-file.txt",
-        "dest/subdir-a/subdir-ac/ac-picture.png",
-        "dest/subdir-b/b-file.txt",
-        "dest/subdir-b/b-picture.png",
+    assert set(Path().glob("dest/**/*.*")) == {
+        Path("dest/subdir-a/a-file.txt"),
+        Path("dest/subdir-a/a-picture.png"),
+        Path("dest/subdir-a/subdir-ac/ac-file.txt"),
+        Path("dest/subdir-a/subdir-ac/ac-picture.png"),
+        Path("dest/subdir-b/b-file.txt"),
+        Path("dest/subdir-b/b-picture.png"),
     }
     assert not Path("root").exists()
 
