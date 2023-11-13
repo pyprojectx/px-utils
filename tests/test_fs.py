@@ -7,7 +7,7 @@ from px_utils import fs
 def test_split_glob():
     assert fs._split_glob("*.py") == (Path(), "*.py")
     assert fs._split_glob("foo/bar/[a-z].py") == (Path("foo/bar"), "[a-z].py")
-    assert fs._split_glob("foo/foo.p?/bar") == (Path("foo"), str(Path("foo.p?/bar")))
+    assert fs._split_glob("foo/foo.p?/bar") == (Path("foo"), "foo.p?/bar")
     assert fs._split_glob("foo.py") == (Path("foo.py"), None)
 
 

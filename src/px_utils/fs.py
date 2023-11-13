@@ -10,7 +10,7 @@ def _split_glob(path):
     glob_index = next((i for i, part in enumerate(parts) if glob_regex.search(part)), None)
     if glob_index is None:
         return Path(path), None
-    return Path().joinpath(*parts[:glob_index]), str(Path().joinpath(*parts[glob_index:]))
+    return Path().joinpath(*parts[:glob_index]), "/".join(parts[glob_index:])
 
 
 def mkdirs(path):
