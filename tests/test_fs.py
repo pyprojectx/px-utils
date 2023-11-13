@@ -19,23 +19,27 @@ def test_mkdirs(tmp_path):
 
 
 @pytest.mark.usefixtures("tmp_dir")
-def test_copytree_no_glob():
-    fs.copytree("root", "dest")
-    assert set(Path().glob("dest/**/*.*")) == {
-        Path("dest/subdir-a/a-file.txt"),
-        Path("dest/subdir-a/a-picture.png"),
-        Path("dest/subdir-a/subdir-ac/ac-file.txt"),
-        Path("dest/subdir-a/subdir-ac/ac-picture.png"),
-        Path("dest/subdir-b/b-file.txt"),
-        Path("dest/subdir-b/b-picture.png"),
-    }
-    fs.copytree("root", "copy-of-root")  # should not raise an exception
-
-
-@pytest.mark.usefixtures("tmp_dir")
 @pytest.mark.parametrize(
     ("src", "dest_files"),
     [
+        (
+            "root",
+            {
+                "dest/subdir-a/a-file.txt",
+                "dest/subdir-a/a-picture.png",
+                "dest/subdir-a/subdir-ac/ac-file.txt",
+                "dest/subdir-a/subdir-ac/ac-picture.png",
+                "dest/subdir-b/b-file.txt",
+                "dest/subdir-b/b-picture.png",
+            },
+        ),
+        (
+            "root/subdir-b",
+            {
+                "dest/b-file.txt",
+                "dest/b-picture.png",
+            },
+        ),
         (
             "**/*.txt",
             {
@@ -57,30 +61,34 @@ def test_copytree_no_glob():
         ("root/subdir-b/*.png", {"dest/b-picture.png"}),
     ],
 )
-def test_copytree_glob(src, dest_files):
+def test_copytree(src, dest_files):
     fs.copytree(src, "dest")
     assert set(Path().glob("dest/**/*.*")) == {Path(p) for p in dest_files}
     fs.copytree(src, "dest")  # should not raise an exception
 
 
 @pytest.mark.usefixtures("tmp_dir")
-def test_movetree_no_glob():
-    fs.movetree("root", "dest")
-    assert set(Path().glob("dest/**/*.*")) == {
-        Path("dest/subdir-a/a-file.txt"),
-        Path("dest/subdir-a/a-picture.png"),
-        Path("dest/subdir-a/subdir-ac/ac-file.txt"),
-        Path("dest/subdir-a/subdir-ac/ac-picture.png"),
-        Path("dest/subdir-b/b-file.txt"),
-        Path("dest/subdir-b/b-picture.png"),
-    }
-    assert not Path("root").exists()
-
-
-@pytest.mark.usefixtures("tmp_dir")
 @pytest.mark.parametrize(
     ("src", "dest_files"),
     [
+        (
+            "root",
+            {
+                "dest/subdir-a/a-file.txt",
+                "dest/subdir-a/a-picture.png",
+                "dest/subdir-a/subdir-ac/ac-file.txt",
+                "dest/subdir-a/subdir-ac/ac-picture.png",
+                "dest/subdir-b/b-file.txt",
+                "dest/subdir-b/b-picture.png",
+            },
+        ),
+        (
+            "root/subdir-b",
+            {
+                "dest/b-file.txt",
+                "dest/b-picture.png",
+            },
+        ),
         (
             "**/*.txt",
             {
@@ -93,7 +101,7 @@ def test_movetree_no_glob():
         ("root/*a/**/*.png", {"dest/subdir-a/a-picture.png", "dest/subdir-a/subdir-ac/ac-picture.png"}),
     ],
 )
-def test_movetree_glob(src, dest_files):
+def test_movetree(src, dest_files):
     fs.movetree(src, "dest")
     assert set(Path().glob("dest/**/*.*")) == {Path(p) for p in dest_files}
     if src.startswith("root"):
