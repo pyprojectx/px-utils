@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pytest
 
@@ -17,5 +18,7 @@ def tmp_dir(tmp_path):
     (b / "b-picture.png").touch()
     (ac / "ac-file.txt").touch()
     (ac / "ac-picture.png").touch()
-    os.chdir(tmp_path)
-    return tmp_path
+    cwd = Path.cwd()
+    os.chdir(tmp_path.absolute())
+    yield tmp_path
+    os.chdir(cwd)

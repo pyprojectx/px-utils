@@ -1,52 +1,56 @@
 import re
 import shutil
-from glob import iglob
 from pathlib import Path
 
 glob_regex = re.compile(r"[*?[]")
 
 
-def _is_glob(path):
-    return glob_regex.search(str(path))
+def _split_glob(path):
+    parts = Path(path).parts
+    glob_index = next((i for i, part in enumerate(parts) if glob_regex.search(part)), None)
+    if glob_index is None:
+        return Path(path), None
+    return Path().joinpath(*parts[:glob_index]), str(Path().joinpath(*parts[glob_index:]))
 
 
 def mkdirs(path):
     Path(path).mkdir(exist_ok=True, parents=True)
 
 
-def copytree(src, dst, includes=None):
-    if includes:
-        src_path = Path(src)
-        for file in iglob(includes, root_dir=src, recursive=True):
-            file_path = src_path / file
-            if file_path.is_file():
-                d = Path(dst) / file
+def copytree(src, dst):
+    src_path, glob = _split_glob(src)
+    if glob:
+        dst_path = Path(dst)
+        for file in src_path.glob(glob):
+            if file.is_file():
+                d = dst_path.joinpath(file.relative_to(src_path))
                 d.parent.mkdir(exist_ok=True, parents=True)
-                shutil.copy2(file_path, d)
+                shutil.copy2(file, d)
     else:
         shutil.copytree(src, dst, dirs_exist_ok=True)
 
 
 def rmtree(path):
-    p = Path(path)
-    if p == p.parent:
+    p, glob = _split_glob(path)
+    if p.absolute() == p.absolute().parent:
         raise ValueError(f"Refusing to delete {path} as it seems to be a filesystem root")
 
-    if _is_glob(path):
-        for file in iglob(path, recursive=True):
-            Path(file).unlink()
+    if glob:
+        for file in p.glob(glob):
+            if file.is_file():
+                file.unlink()
     else:
         shutil.rmtree(path)
 
 
-def movetree(src, dst, includes=None):
-    if includes:
-        src_path = Path(src)
-        for file in iglob(includes, root_dir=src, recursive=True):
-            file_path = src_path / file
-            if file_path.is_file():
-                d = Path(dst) / file
+def movetree(src, dst):
+    src_path, glob = _split_glob(src)
+    if glob:
+        dst_path = Path(dst)
+        for file in src_path.glob(glob):
+            if file.is_file():
+                d = dst_path.joinpath(file.relative_to(src_path))
                 d.parent.mkdir(exist_ok=True, parents=True)
-                shutil.move(file_path, d)
+                shutil.move(file, d)
     else:
         shutil.move(src, dst)
