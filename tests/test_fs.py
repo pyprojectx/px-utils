@@ -21,13 +21,13 @@ def test_mkdirs(tmp_path):
 @pytest.mark.usefixtures("tmp_dir")
 def test_copytree_no_glob():
     fs.copytree("root", "dest")
-    assert {str(p) for p in Path().glob("dest/**/*.*")} == {
-        "dest/subdir-a/a-file.txt",
-        "dest/subdir-a/a-picture.png",
-        "dest/subdir-a/subdir-ac/ac-file.txt",
-        "dest/subdir-a/subdir-ac/ac-picture.png",
-        "dest/subdir-b/b-file.txt",
-        "dest/subdir-b/b-picture.png",
+    assert set(Path().glob("dest/**/*.*")) == {
+        Path("dest/subdir-a/a-file.txt"),
+        Path("dest/subdir-a/a-picture.png"),
+        Path("dest/subdir-a/subdir-ac/ac-file.txt"),
+        Path("dest/subdir-a/subdir-ac/ac-picture.png"),
+        Path("dest/subdir-b/b-file.txt"),
+        Path("dest/subdir-b/b-picture.png"),
     }
     fs.copytree("root", "copy-of-root")  # should not raise an exception
 
@@ -59,7 +59,7 @@ def test_copytree_no_glob():
 )
 def test_copytree_glob(src, dest_files):
     fs.copytree(src, "dest")
-    assert {str(p) for p in Path().glob("dest/**/*.*")} == dest_files
+    assert set(Path().glob("dest/**/*.*")) == {Path(p) for p in dest_files}
     fs.copytree(src, "dest")  # should not raise an exception
 
 
@@ -95,7 +95,7 @@ def test_movetree_no_glob():
 )
 def test_movetree_glob(src, dest_files):
     fs.movetree(src, "dest")
-    assert {str(p) for p in Path().glob("dest/**/*.*")} == dest_files
+    assert set(Path().glob("dest/**/*.*")) == {Path(p) for p in dest_files}
     if src.startswith("root"):
         assert not list(Path().glob("src"))
     else:
@@ -132,5 +132,5 @@ def test_movetree_glob(src, dest_files):
 )
 def test_rmtree(path, root_files):
     fs.rmtree(path)
-    assert {str(p) for p in Path().glob("root/**/*.*")} == root_files
+    assert set(Path().glob("root/**/*.*")) == {Path(p) for p in root_files}
     fs.rmtree(path)  # should not raise an exception
