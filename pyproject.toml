@@ -71,7 +71,7 @@ build = [
     "pw@install",
     "pw@check",
     "pw@pdm build",
-    "bin/cli-help",
+    "python bin/cli-help",
 ]
 
 # used in github actions:
