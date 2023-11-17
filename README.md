@@ -39,8 +39,8 @@ options:
 ## pcp
 usage: pcp [-h] source_files [source_files ...] destination
 
-Copy source files to a destination directory. The source be multiple files or
-globs. Files are copied preserving directory structure.
+Copy source files to a destination directory. The source can be multiple files
+or globs. Files are copied preserving directory structure.
 
 positional arguments:
   source_files  The files to copy. Can be multiple files/globs. IMPORTANT:
@@ -54,8 +54,8 @@ options:
 ## pmv
 usage: pmv [-h] source_files [source_files ...] destination
 
-Move source files to a destination directory. The source be multiple files or
-globs. Files are moved preserving directory structure.
+Move source files to a destination directory. The source can be multiple files
+or globs. Files are moved preserving directory structure.
 
 positional arguments:
   source_files  The files to move. Can be multiple files/globs. IMPORTANT:

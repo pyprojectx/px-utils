@@ -42,7 +42,7 @@ def _copy(move):
     verb = "moved" if move else "copied"
     parser = argparse.ArgumentParser(
         description=f"{name.capitalize()} source files to a destination directory. "
-        f"The source be multiple files or globs. Files are {verb} preserving directory structure."
+        f"The source can be multiple files or globs. Files are {verb} preserving directory structure."
     )
     parser.add_argument(
         "source_files",

@@ -70,7 +70,8 @@ check = [
 build = [
     "pw@install",
     "pw@check",
-    "pw@pdm build"
+    "pw@pdm build",
+    "bin/cli-help",
 ]
 
 # used in github actions:
