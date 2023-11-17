@@ -25,7 +25,10 @@ test = [
 ]
 
 [project.scripts]
-todo = "px_utils.cli:main"
+pmkdirs = "px_utils.cli:pmkdirs"
+pcp = "px_utils.cli:pcp"
+pmv = "px_utils.cli:pmv"
+prm = "px_utils.cli:prm"
 
 [build-system]
 requires = ["pdm-backend"]
@@ -46,16 +49,17 @@ ignore = ["D100", "D102", "D103", "D104", "D105", "D213", "D203", "T201", "TRY00
 [tool.pyprojectx]
 pdm = { requirements = ["pdm==2.10.1"], post-install = "pw@pdm plugin add pdm-buildlocked && pw@pre-commit install" }
 pre-commit = "pre-commit==3.5.0"
-mkdocs = ["mkdocs ~=1.4", "mkdocs-material ~=9.1", "mkdocstrings[python] ~=0.21", "markdown-include ~=0.8", ]
+px-utils = "-e ."
 
 [tool.pyprojectx.aliases]
 install = "pdm install"
 update = "pdm update"
 outdated = "pdm update --outdated"
-clean = "rm -r .venv .pytest_cache dist"
-clean-all = """\
-pw@clean
-rm -r .pyprojectx"""
+clean = "@px-utils: prm build dist .pytest_cache .coverage .ruff_cache .pdm-python .pdm-build"
+clean-all = [
+    "pw@clean",
+    "@px-utils: prm .venv .pyprojectx"
+]
 test = "pdm run pytest tests"
 format = "pre-commit run ruff-format --all-files; pre-commit run ruff --all-files"
 lint = "pre-commit run ruff-format --all-files && pre-commit run ruff --all-files"
@@ -73,23 +77,12 @@ build = [
 publish = "pdm publish --username __token__"
 prep-release = """\
 # cleanup
-rm -f wrappers.zip .changelog.md
+rm .changelog.md
 # extract version from tag
 RELEASE_VERSION="${GITHUB_REF_NAME}"
-# replace __version__ in wrapper
-sed -i -e "s/__version__/${RELEASE_VERSION}/g" src/px_utils/wrapper/pw.py
+# replace __version__ in pyproject.toml
 sed -i -e "s/1.0.0.dev/${RELEASE_VERSION}/g" pyproject.toml
 # cleanup sed backup
-rm -r src/px_utils/wrapper/pw.py?*
 rm -r pyproject.toml?*
-mkdir -p dist-zip
-cp src/px_utils/wrapper/pw.py dist-zip/pw
-cp src/px_utils/wrapper/pw.bat dist-zip/pw.bat
-zip -j wrappers.zip dist-zip/pw*
 awk '/-{3,}/{flag=1;next}/Release/{if (flag==1)exit}flag' CHANGELOG.md > .changelog.md
 """
-
-generate-usage = "pw@ --help > docs/docs/usage.txt"
-serve-docs = "@mkdocs: cd docs && mkdocs serve"
-generate-docs = "@mkdocs: pw@generate-usage && cd docs && mkdocs build"
-deploy-docs = "@mkdocs: cd docs && mkdocs gh-deploy"

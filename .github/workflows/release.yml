@@ -25,7 +25,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body_path: .changelog.md
-          files: wrappers.zip
 
       - name: Publish to Pypi
         run: ./pw publish --password ${{ secrets.PYPI_TOKEN }}

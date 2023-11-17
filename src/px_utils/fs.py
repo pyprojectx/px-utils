@@ -13,8 +13,8 @@ def _split_glob(path):
     return Path().joinpath(*parts[:glob_index]), "/".join(parts[glob_index:])
 
 
-def mkdirs(path):
-    Path(path).mkdir(exist_ok=True, parents=True)
+def mkdirs(directory):
+    Path(directory).mkdir(exist_ok=True, parents=True)
 
 
 def copytree(src, dst):
@@ -39,8 +39,11 @@ def rmtree(path):
         for file in p.glob(glob):
             if file.is_file():
                 file.unlink()
-    else:
-        shutil.rmtree(path)
+    elif p.exists():
+        if p.is_file():
+            p.unlink()
+        else:
+            shutil.rmtree(path)
 
 
 def movetree(src, dst):

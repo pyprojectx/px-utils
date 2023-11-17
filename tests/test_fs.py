@@ -11,11 +11,12 @@ def test_split_glob():
     assert fs._split_glob("foo.py") == (Path("foo.py"), None)
 
 
-def test_mkdirs(tmp_path):
-    path = tmp_path / "foo" / "bar"
-    fs.mkdirs(path)
-    assert path.exists()
-    fs.mkdirs(path)  # should not raise an exception
+@pytest.mark.usefixtures("tmp_dir")
+def test_mkdirs():
+    directory = "foo/bar"
+    fs.mkdirs(directory)
+    assert Path(directory).exists()
+    fs.mkdirs(directory)  # should not raise an exception
 
 
 @pytest.mark.usefixtures("tmp_dir")
@@ -115,6 +116,20 @@ def test_movetree(src, dest_files):
     ("path", "root_files"),
     [
         (
+            "root",
+            set(),
+        ),
+        (
+            "root/subdir-a/a-file.txt",
+            {
+                "root/subdir-a/a-picture.png",
+                "root/subdir-a/subdir-ac/ac-file.txt",
+                "root/subdir-a/subdir-ac/ac-picture.png",
+                "root/subdir-b/b-file.txt",
+                "root/subdir-b/b-picture.png",
+            },
+        ),
+        (
             "**/*.txt",
             {"root/subdir-a/a-picture.png", "root/subdir-a/subdir-ac/ac-picture.png", "root/subdir-b/b-picture.png"},
         ),
@@ -134,6 +149,17 @@ def test_movetree(src, dest_files):
                 "root/subdir-a/subdir-ac/ac-file.txt",
                 "root/subdir-b/b-picture.png",
                 "root/subdir-b/b-file.txt",
+            },
+        ),
+        (
+            "foo",
+            {
+                "root/subdir-a/a-file.txt",
+                "root/subdir-a/a-picture.png",
+                "root/subdir-a/subdir-ac/ac-file.txt",
+                "root/subdir-a/subdir-ac/ac-picture.png",
+                "root/subdir-b/b-file.txt",
+                "root/subdir-b/b-picture.png",
             },
         ),
     ],
