@@ -25,8 +25,8 @@ clean = "@px-utils: prm build dist .pytest_cache .coverage"
 ## File operations
 
 <!-- START-CLI -->
-## pmkdirs
-usage: pmkdirs [-h] directories [directories ...]
+## pxmkdirs
+usage: pxmkdirs [-h] directories [directories ...]
 
 Create a directory and any missing parent directories.
 
@@ -36,8 +36,8 @@ positional arguments:
 options:
   -h, --help   show this help message and exit
 
-## pcp
-usage: pcp [-h] source_files [source_files ...] destination
+## pxcp
+usage: pxcp [-h] source_files [source_files ...] destination
 
 Copy source files to a destination directory. The source can be multiple files
 or globs. Files are copied preserving directory structure.
@@ -51,8 +51,8 @@ positional arguments:
 options:
   -h, --help    show this help message and exit
 
-## pmv
-usage: pmv [-h] source_files [source_files ...] destination
+## pxmv
+usage: pxmv [-h] source_files [source_files ...] destination
 
 Move source files to a destination directory. The source can be multiple files
 or globs. Files are moved preserving directory structure.
@@ -66,8 +66,8 @@ positional arguments:
 options:
   -h, --help    show this help message and exit
 
-## prm
-usage: prm [-h] files [files ...]
+## pxrm
+usage: pxrm [-h] files [files ...]
 
 Delete files or globs.
 

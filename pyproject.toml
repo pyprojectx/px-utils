@@ -25,10 +25,10 @@ test = [
 ]
 
 [project.scripts]
-pmkdirs = "px_utils.cli:pmkdirs"
-pcp = "px_utils.cli:pcp"
-pmv = "px_utils.cli:pmv"
-prm = "px_utils.cli:prm"
+pxmkdirs = "px_utils.cli:mkdirs"
+pxcp = "px_utils.cli:cp"
+pxmv = "px_utils.cli:mv"
+pxrm = "px_utils.cli:rm"
 
 [build-system]
 requires = ["pdm-backend"]
@@ -47,7 +47,7 @@ ignore = ["D100", "D102", "D103", "D104", "D105", "D213", "D203", "T201", "TRY00
 "tests/*" = ["S101", "SLF001"]
 
 [tool.pyprojectx]
-pdm = { requirements = ["pdm==2.10.1"], post-install = "pw@pdm plugin add pdm-buildlocked && pw@pre-commit install" }
+pdm = { requirements = ["pdm==2.10.3"], post-install = "pw@pdm plugin add pdm-buildlocked && pw@pre-commit install" }
 pre-commit = "pre-commit==3.5.0"
 px-utils = "-e ."
 
@@ -55,10 +55,10 @@ px-utils = "-e ."
 install = "pdm install"
 update = "pdm update"
 outdated = "pdm update --outdated"
-clean = "@px-utils: prm build dist .pytest_cache .coverage .ruff_cache .pdm-python .pdm-build"
-clean-all = [
+clean = "@px-utils: pxrm build dist .pytest_cache .coverage .ruff_cache .pdm-python .pdm-build"
+full-clean = [
     "pw@clean",
-    "@px-utils: prm .venv .pyprojectx"
+    "@px-utils: pxrm .venv .pyprojectx"
 ]
 test = "pdm run pytest tests"
 format = "pre-commit run ruff-format --all-files; pre-commit run ruff --all-files"

@@ -1,3 +1,12 @@
+Release v1.1.0 (2023-11-22)
+----------------------------
+### Features & Improvements
+Renamed commands to:
+- pxmkdirs
+- pxcp
+- pxmv
+- pxrm
+
 Release v1.0.0 (2023-11-17)
 ----------------------------
 ### Features & Improvements

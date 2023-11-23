@@ -10,18 +10,18 @@ GLOB_MSG = (
 )
 
 
-def pmkdirs():
+def mkdirs():
     parser = argparse.ArgumentParser(description="Create a directory and any missing parent directories.")
     parser.add_argument("directories", nargs="+", help="The director(y)(ies) to create.")
     for directory in parser.parse_args(sys.argv[1:]).directories:
         fs.mkdirs(directory)
 
 
-def pcp():
+def cp():
     _copy(move=False)
 
 
-def prm():
+def rm():
     parser = argparse.ArgumentParser(description="Delete files or globs.")
     parser.add_argument(
         "files",
@@ -33,7 +33,7 @@ def prm():
         fs.rmtree(file)
 
 
-def pmv():
+def mv():
     _copy(move=True)
 
 
