@@ -33,7 +33,7 @@ Create a directory and any missing parent directories.
 positional arguments:
   directories  The director(y)(ies) to create.
 
-options:
+optional arguments:
   -h, --help   show this help message and exit
 
 ## pxcp
@@ -48,7 +48,7 @@ positional arguments:
                 expansion by *nix shells!
   destination   The destination directory.
 
-options:
+optional arguments:
   -h, --help    show this help message and exit
 
 ## pxmv
@@ -63,7 +63,7 @@ positional arguments:
                 expansion by *nix shells!
   destination   The destination directory.
 
-options:
+optional arguments:
   -h, --help    show this help message and exit
 
 ## pxrm
@@ -76,7 +76,7 @@ positional arguments:
               when using globs, they must be quoted in order to prevent
               expansion by *nix shells!
 
-options:
+optional arguments:
   -h, --help  show this help message and exit
 
 <!-- END-CLI -->

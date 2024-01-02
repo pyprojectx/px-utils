@@ -22,6 +22,7 @@ buildlocked = true
 test = [
     "pytest>=7.4.3",
     "pytest-mock>=3.12.0",
+    "tomlkit>=0.12.3",
 ]
 
 [project.scripts]
@@ -52,6 +53,7 @@ requirements = [
     "pdm",
     "ruff",
     "pre-commit",
+    "tomlkit",
     "px-utils",
 ]
 post-install = "pdm plugin add pdm-buildlocked && pre-commit install"
@@ -66,18 +68,7 @@ format = ["ruff format", "ruff check --select I --fix"]
 lint = ["ruff check"]
 test = "pdm run pytest tests"
 check = ["@lint", "@test"]
-build = ["@install", "@check", "pdm build", "cli-help"]
+build = ["@install", "@check", "pdm build", "@cli-help"]
 
 # used in github actions:
 publish = "pdm publish --username __token__"
-prep-release = """\
-# cleanup
-rm .changelog.md
-# extract version from tag
-RELEASE_VERSION="${GITHUB_REF_NAME}"
-# replace __version__ in pyproject.toml
-sed -i -e "s/1.0.0.dev/${RELEASE_VERSION}/g" pyproject.toml
-# cleanup sed backup
-rm -r pyproject.toml?*
-awk '/-{3,}/{flag=1;next}/Release/{if (flag==1)exit}flag' CHANGELOG.md > .changelog.md
-"""
