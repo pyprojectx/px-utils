@@ -1,0 +1,4 @@
+[main]
+requirements = ["CacheControl==0.13.1", "PyYAML==6.0.1", "Pygments==2.17.2", "blinker==1.7.0", "certifi==2023.11.17", "cfgv==3.4.0", "charset-normalizer==3.3.2", "dep-logic==0.0.4", "distlib==0.3.8", "filelock==3.13.1", "findpython==0.4.1", "identify==2.5.33", "idna==3.6", "installer==0.7.0", "markdown-it-py==3.0.0", "mdurl==0.1.2", "msgpack==1.0.7", "nodeenv==1.8.0", "packaging==23.2", "pdm-buildlocked==0.3.0", "pdm==2.11.2", "platformdirs==4.1.0", "pre-commit==3.6.0", "px-utils==1.1.0", "pyproject_hooks==1.0.0", "python-dotenv==1.0.0", "requests-toolbelt==1.0.0", "requests==2.31.0", "resolvelib==1.0.1", "rich==13.7.0", "ruff==0.1.9", "setuptools==69.0.3", "shellingham==1.5.4", "tomlkit==0.12.3", "truststore==0.8.0", "unearth==0.12.1", "urllib3==2.1.0", "virtualenv==20.25.0"]
+hash = "dd1726ced8a175ffacc842ea6aba624f"
+post-install = "pdm plugin add pdm-buildlocked && pre-commit install"
