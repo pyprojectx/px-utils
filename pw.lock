@@ -1,4 +1,4 @@
 [main]
-requirements = ["cfgv==3.4.0", "distlib==0.3.9", "filelock==3.16.1", "identify==2.6.2", "nodeenv==1.9.1", "platformdirs==4.3.6", "pre-commit==4.0.1", "px-utils==1.1.0", "pyyaml==6.0.2", "ruff==0.7.3", "tomlkit==0.13.2", "uv==0.5.1", "virtualenv==20.27.1"]
+requirements = ["cfgv==3.4.0", "distlib==0.3.9", "filelock==3.16.1", "identify==2.6.1", "nodeenv==1.9.1", "platformdirs==4.3.6", "pre-commit==3.5.0", "px-utils==1.1.0", "pyyaml==6.0.2", "ruff==0.7.3", "tomlkit==0.13.2", "uv==0.5.1", "virtualenv==20.27.1"]
 hash = "c28a2b4b2e1e6b7fe2c6939750bc4f59"
 post-install = "pre-commit install"
