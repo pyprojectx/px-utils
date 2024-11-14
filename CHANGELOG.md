@@ -1,3 +1,6 @@
+### Features & Improvements
+- Use uv as build system
+
 Release v1.1.0 (2023-11-22)
 ----------------------------
 ### Features & Improvements
