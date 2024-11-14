@@ -16,10 +16,10 @@ Or using Pyprojectx:
 
 ```toml
 [tool.pyprojectx]
-px-utils= "px-utils"
+main= ["uv", "px-utils"]
 
 [tool.pyprojectx.aliases]
-clean = "@px-utils: prm build dist .pytest_cache .coverage"
+clean = "pxrm build dist .pytest_cache .coverage"
 ```
 
 ## File operations
