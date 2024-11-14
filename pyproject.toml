@@ -1,6 +1,6 @@
 [project]
 name = "px-utils"
-version = "1.1.1.dev"
+version = "1.0.0.dev"
 description = "Build utilities python projects"
 license = { text = "MIT" }
 authors = [{ name = "Houbie", email = "ivo@houbrechts-it.be" }]
