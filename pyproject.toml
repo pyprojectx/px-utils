@@ -1,6 +1,6 @@
 [project]
 name = "px-utils"
-version = "1.0.0.dev"
+version = "1.1.1.dev"
 description = "Build utilities python projects"
 license = { text = "MIT" }
 authors = [{ name = "Houbie", email = "ivo@houbrechts-it.be" }]
@@ -15,13 +15,9 @@ classifiers = [
 requires-python = ">=3.8"
 
 dependencies = []
-
-[tool.pdm.build]
-[tool.pdm.dev-dependencies]
-test = [
-    "pytest>=7.4.3",
-    "pytest-mock>=3.12.0",
-    "tomlkit>=0.12.3",
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
 ]
 
 [project.scripts]
@@ -31,8 +27,9 @@ pxmv = "px_utils.cli:mv"
 pxrm = "px_utils.cli:rm"
 
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -50,25 +47,27 @@ ignore = ["ISC001", "ANN", "FA", "FBT", "D100", "D102", "D103", "D104", "D105", 
 [tool.pyprojectx]
 [tool.pyprojectx.main]
 requirements = [
-    "pdm",
+    "uv",
     "ruff",
     "pre-commit",
     "tomlkit",
     "px-utils",
 ]
 post-install = "pre-commit install"
+[tool.pyprojectx.project]
+requirements = ["-e .", "tomlkit"]
 
 [tool.pyprojectx.aliases]
-install = "pdm install"
-update = "pdm update"
-outdated = "pdm update --outdated"
-clean = "pxrm .venv .pytest_cache dist .pdm-build .ruff_cache"
+install = "uv sync"
+update = "uv lock"
+outdated = "uv pip list --outdated"
+clean = "pxrm .venv .pytest_cache dist .ruff_cache"
 full-clean = ["@clean", "pxrm .pyprojectx"]
 format = ["ruff format", "ruff check --select I --fix"]
 lint = ["ruff check"]
-test = "pdm run pytest tests"
+test = "uv run pytest tests"
 check = ["@lint", "@test"]
-build = ["@install", "@check", "pdm build", "@cli-help"]
+build = ["@install", "@check", "uv build", "@cli-help"]
 
 # used in github actions:
-publish = "pdm publish --username __token__"
+publish = "uv publish --username __token__"

@@ -14,7 +14,7 @@ pyproject.write_text(pyproject.read_text().replace("1.0.0.dev", RELEASE_VERSION)
 # extract the first change log from CHANGELOG.md
 with Path("CHANGELOG.md").open() as changelog, Path(".changelog.md").open("w") as out:
     fist_header = False
-    for line in changelog.readlines():
+    for line in changelog:
         if not fist_header:
             if line.startswith("###"):
                 fist_header = True

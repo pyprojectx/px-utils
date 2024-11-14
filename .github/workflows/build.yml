@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ Ubuntu, Windows ]
-        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
         include:
           - os: Ubuntu
             image: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .venv
-          key: ${{ hashFiles('pdm.lock') }}-${{ runner.os }}-${{ matrix.python-version }}-venv
+          key: ${{ hashFiles('uv.lock') }}-${{ runner.os }}-${{ matrix.python-version }}-venv
 
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         uses: actions/setup-python@v4

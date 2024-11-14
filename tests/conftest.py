@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 
-@pytest.fixture()
+@pytest.fixture
 def tmp_dir(tmp_path):
     r = tmp_path / "root"
     a = r / "subdir-a"
