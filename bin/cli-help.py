@@ -15,12 +15,14 @@ with toml_path.open("rb") as f:
     for script in toml_dict["project"]["scripts"]:
         help_text.append(f"## {script}")
         p = subprocess.run(f"{project_dir}/pw uv run {script} --help", shell=True, capture_output=True, check=True)
-        help_text.append(p.stdout.decode("utf-8"))
+        help_text.append(p.stdout.decode("utf-8").replace("\r\n", "\n"))
 
 with readme_file.open() as r:
     readme = r.read()
     global_regex = re.compile(r"<!-- START-CLI -->.*<!-- END-CLI -->", re.DOTALL)
-    readme = global_regex.sub("<!-- START-CLI -->\n" + "\n".join(help_text) + "\n<!-- END-CLI -->", readme)
+    cli_block = "<!-- START-CLI -->\n" + "\n".join(help_text) + "\n<!-- END-CLI -->"
+    # pass a function: a plain string is parsed as a template, so any backslash in --help output would blow up
+    readme = global_regex.sub(lambda _: cli_block, readme)
 with readme_file.open("w") as r:
     r.write(readme)
 

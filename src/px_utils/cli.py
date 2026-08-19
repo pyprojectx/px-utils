@@ -11,7 +11,9 @@ GLOB_MSG = (
 
 
 def mkdirs():
-    parser = argparse.ArgumentParser(description="Create a directory and any missing parent directories.")
+    parser = argparse.ArgumentParser(
+        prog="pxmkdirs", description="Create a directory and any missing parent directories."
+    )
     parser.add_argument("directories", nargs="+", help="The director(y)(ies) to create.")
     for directory in parser.parse_args(sys.argv[1:]).directories:
         fs.mkdirs(directory)
@@ -22,7 +24,7 @@ def cp():
 
 
 def rm():
-    parser = argparse.ArgumentParser(description="Delete files or globs.")
+    parser = argparse.ArgumentParser(prog="pxrm", description="Delete files or globs.")
     parser.add_argument(
         "files",
         nargs="+",
@@ -41,8 +43,9 @@ def _copy(move):
     name = "move" if move else "copy"
     verb = "moved" if move else "copied"
     parser = argparse.ArgumentParser(
+        prog=f"px{'mv' if move else 'cp'}",
         description=f"{name.capitalize()} source files to a destination directory. "
-        f"The source can be multiple files or globs. Files are {verb} preserving directory structure."
+        f"The source can be multiple files or globs. Files are {verb} preserving directory structure.",
     )
     parser.add_argument(
         "source_files",
