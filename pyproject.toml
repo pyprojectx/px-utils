@@ -27,7 +27,7 @@ pxmv = "px_utils.cli:mv"
 pxrm = "px_utils.cli:rm"
 
 [build-system]
-requires = ["uv_build>=0.12"]
+requires = ["uv_build>=0.12,<0.13"]
 build-backend = "uv_build"
 
 
