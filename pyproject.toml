@@ -12,12 +12,12 @@ classifiers = [
     "Topic :: Software Development :: Build Tools",
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 dependencies = []
 [dependency-groups]
 dev = [
-    "pytest>=8.3",
+    "pytest>=8",
 ]
 
 [project.scripts]
@@ -27,8 +27,8 @@ pxmv = "px_utils.cli:mv"
 pxrm = "px_utils.cli:rm"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.12"]
+build-backend = "uv_build"
 
 
 [tool.pytest.ini_options]
@@ -39,25 +39,22 @@ line-length = 120
 [tool.ruff.lint]
 select = ["ALL"]
 fixable = ["ALL"]
-ignore = ["ISC001", "ANN", "FA", "FBT", "D100", "D102", "D103", "D104", "D105", "D213", "D203", "T201", "TRY003", "EM102", "COM812", "S602", "S603", "S604", "S605", "S607", "S324"]
+ignore = ["ISC001", "ANN", "CPY001", "FA", "FBT", "D100", "D102", "D103", "D104", "D105", "D213", "D203", "T201", "TRY003", "EM102", "COM812", "S602", "S603", "S604", "S605", "S607", "S324"]
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["SLF001", "S101", "I001", "INP001"]
 "bin/*" = ["INP001"]
 
 [tool.pyprojectx]
-lock-python-version = "3.8"
+lock-python-version = "3.9"
 [tool.pyprojectx.main]
 requirements = [
     "uv",
     "ruff",
-    "pre-commit",
+    "prek",
     "tomlkit",
     "px-utils",
 ]
-post-install = "pre-commit install"
-[tool.pyprojectx.project]
-requirements = ["-e .", "tomlkit"]
-
+post-install = "prek install"
 [tool.pyprojectx.aliases]
 install = "uv sync"
 update = "uv lock"
